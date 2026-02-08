@@ -60,6 +60,7 @@
         <groupId>io.cucumber</groupId>
         <artifactId>cucumber-picocontainer</artifactId>
         <version>${cucumber.version}</version>
+        <scope>test</scope>
     </dependency>
 
     <!-- TestNG -->
@@ -137,7 +138,30 @@
         <artifactId>json-simple</artifactId>
         <version>1.1.1</version>
     </dependency>
-  </dependencies>
+    <!-- Database -->
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <version>8.3.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.7.2</version>
+    </dependency>
+    <!-- Accessibility -->
+        <dependency>
+            <groupId>com.deque.html.axe-core</groupId>
+            <artifactId>selenium</artifactId>
+            <version>4.8.0</version>
+        </dependency>
+        <!-- Visual Regression -->
+        <dependency>
+            <groupId>ru.yandex.qatools.ashot</groupId>
+            <artifactId>ashot</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+    </dependencies>
 
   <build>
     <plugins>

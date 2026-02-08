@@ -136,3 +136,59 @@ docker-compose down
 | **Azure: Permission Denied** | Ensure the YAML file has correct permissions (`chmod +x` is usually handled). |
 | **Docker: Connection Refused** | Ensure `docker-compose.yml` uses the service name `selenium-hub` as the host, not `localhost`. |
 | **Git: Auth Failed** | Use Personal Access Token (PAT) instead of password for Git operations. |
+
+---
+
+## 6. 🚀 Advanced Framework Features Consumption
+
+### 🔄 Database Validation (JDBC)
+1.  **Configure URL**: Add your DB URL, username, and password to `config.properties`.
+2.  **Usage**:
+    ```java
+    DBUtil.establishConnection(url, user, pass);
+    List<Map<String, Object>> data = DBUtil.executeQuery("SELECT * FROM bookings WHERE id=1");
+    DBUtil.closeConnection();
+    ```
+
+### ♿ Accessibility Checks (Axe-core)
+1.  **Usage**: Call the static method anywhere in your UI tests after navigating to a page.
+    ```java
+    AccessibilityUtil.checkAccessibility(driver);
+    ```
+2.  **Results**: Violations (if any) are logged with impact levels (Critical, Serious, etc.).
+
+### 👁️ Visual Regression (AShot)
+1.  **Usage**: Perform a screenshot comparison.
+    ```java
+    VisualUtil.compareScreenshot(driver, "dashboard_view");
+    ```
+2.  **Baselines**: Baseline images are saved in `src/test/resources/baselines/`. Mismatches generate diff images in `target/visual-diffs/`.
+
+### 🛡️ Security Scanning (OWASP ZAP)
+1.  **Usage**: Enable ZAP proxy for Rest Assured or Selenium.
+    ```java
+    ZapUtil.setRestAssuredProxy(); // For API
+    ChromeOptions options = ZapUtil.getZapChromeOptions(); // For UI
+    ```
+2.  **Requirements**: OWASP ZAP must be running on `localhost:8080`.
+
+### 🧪 API POJO Handling (Lombok)
+1.  **Usage**: Construct payloads using the `@Builder` pattern for cleaner code.
+    ```java
+    Booking payload = Booking.builder()
+        .firstname("John")
+        .lastname("Doe")
+        .totalprice(150)
+        .depositpaid(true)
+        .bookingdates(BookingDates.builder().checkin("2024-01-01").checkout("2024-01-05").build())
+        .build();
+    ```
+
+### ☁️ BrowserStack Execution
+1.  **Usage**: Pass the BrowserStack grid URL via command line or properties.
+    ```bash
+    mvn test -Dgrid.url=https://YOUR_USER:YOUR_KEY@hub-cloud.browserstack.com/wd/hub
+    ```
+
+---
+**Happy Testing!** 🕵️‍♂️

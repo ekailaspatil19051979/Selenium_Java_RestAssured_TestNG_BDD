@@ -9,9 +9,14 @@ The framework follows the **Page Object Model (POM)** design pattern for UI and 
 *   **Unified Testing**: Run UI and API tests in the same execution cycle.
 *   **Behavior Driven Development (BDD)**: Write tests in plain English using Gherkin syntax.
 *   **Data-Driven**: Externalize test data in Excel, JSON, and CSV formats.
+*   **Lombok Models (POJOs)**: Type-safe request/response handling for API automation.
 *   **Parallel Execution**: Run tests concurrently using TestNG and Selenium Grid.
-*   **Cross-Browser**: Support for Chrome, Firefox, and Edge (via Docker/Grid).
+*   **Cross-Browser & Cloud**: Support for Chrome, Firefox, and **BrowserStack**.
 *   **Robust Reporting**: Integrated Extent Reports and Allure Reports.
+*   **Self-Healing & Reliability**: Integrated **Retry Mechanism** for flaky tests.
+*   **Database Validation**: Native support for **JDBC (MySQL/PostgreSQL)** assertions.
+*   **Accessibility & Visual Compliance**: Automated **Axe-core** and **AShot** checks.
+*   **Security Insight**: Proxying traffic through **OWASP ZAP** for vulnerability awareness.
 
 ---
 
@@ -266,10 +271,32 @@ docker-compose up --build
 ```
 *   **Hub**: http://localhost:4444
 *   **Test Runner**: Executes tests and shuts down.
+---
+
+## 14. 🚀 Advanced Enterprise Features
+
+This framework includes several advanced modules that elevate it above standard automation suites:
+
+### 🔄 Reliability & Self-Healing
+*   **Retry Analyzer**: Automatically reruns failed tests based on the `RetryAnalyzer.java` logic. Configured via `AnnotationTransformer` and registered in `testng.xml`.
+*   **Wait Factory**: A centralized synchronization layer (`WaitFactory.java`) providing standardized Explicit and Fluent waits for all UI interactions.
+
+### 🧪 Advanced Validation Layers
+*   **DB Utility**: Native support for direct database assertions via `DBUtil.java`. Currently supports **MySQL** and **PostgreSQL**.
+*   **Accessibility Testing**: Automated WCAG/ADA compliance scans using **Axe-core** integrated via `AccessibilityUtil.java`.
+*   **Visual Regression**: Pixel-accurate UI comparison using **AShot** via `VisualUtil.java`. Compare live runs against baseline screenshots in `src/test/resources/baselines`.
+
+### 🛡️ Security & Observability
+*   **API Pojo Models**: Request and response bodies are managed through type-safe Lombok models (e.g., `Booking.java`), ensuring high data integrity.
+*   **Global Logging Filter**: Every API request and response is automatically captured and logged to Console/Log4j2 via the `CustomLogFilter`.
+*   **Security Scanning**: Support for **OWASP ZAP** proxy integration via `ZapUtil.java` to detect vulnerabilities during execution.
+
+### ☁️ Cloud Testing
+*   **BrowserStack**: Seamlessly switch from local execution to the cloud by passing the BrowserStack Grid URL to the `DriverFactory`.
 
 ---
 
-## 14. ❓ Troubleshooting
+## 15. ❓ Troubleshooting
 
 | Issue | Solution |
 | :--- | :--- |
@@ -280,7 +307,7 @@ docker-compose up --build
 
 ---
 
-## 15. 🏆 Best Practices
+## 16. 🏆 Best Practices
 
 *   **Atomic Tests**: Each test should be independent and valid on its own.
 *   **Reuse Components**: Use `api/`, `pages/`, and `utils/` instead of duplicating code.
@@ -290,7 +317,7 @@ docker-compose up --build
 
 ---
 
-## 16. 🤝 Contribution Guidelines
+## 17. 🤝 Contribution Guidelines
 
 1.  **Branching**: Create a feature branch for changes (`feature/new-test-scenario`).
 2.  **Commit Messages**: Use clear messages (`feat: added login tests`, `fix: corrected timeout`).

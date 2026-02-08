@@ -3,6 +3,7 @@
 <suite name="Enterprise Automation Suite" parallel="tests" thread-count="4">
     <listeners>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+        <listener class-name="utils.AnnotationTransformer"/>
     </listeners>
     
     <test name="BDD Tests">

@@ -1,5 +1,6 @@
 package base;
 
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -38,5 +39,13 @@ public class BasePage {
     public String getText(WebElement element) {
         waitForVisibility(element);
         return element.getText();
+    }
+
+    /**
+     * Selenium 4 Feature: Access Shadow DOM
+     * Returns the ShadowRoot of a given host element
+     */
+    public SearchContext getShadowRoot(WebElement shadowHost) {
+        return shadowHost.getShadowRoot();
     }
 }

@@ -21,16 +21,30 @@ public class DriverFactory {
 
         if (gridUrl != null && !gridUrl.isEmpty()) {
             try {
-                if (browser.equalsIgnoreCase("chrome")) {
-                    ChromeOptions options = new ChromeOptions();
-                    if (ConfigReader.isHeadless())
-                        options.addArguments("--headless");
-                    threadLocalDriver.set(new RemoteWebDriver(new URL(gridUrl), options));
-                } else if (browser.equalsIgnoreCase("firefox")) {
-                    FirefoxOptions options = new FirefoxOptions();
-                    if (ConfigReader.isHeadless())
-                        options.addArguments("--headless");
-                    threadLocalDriver.set(new RemoteWebDriver(new URL(gridUrl), options));
+                if (gridUrl.contains("browserstack")) {
+                    // BrowserStack Specific Capabilities
+                    if (browser.equalsIgnoreCase("chrome")) {
+                        ChromeOptions options = new ChromeOptions();
+                        java.util.HashMap<String, Object> browserstackOptions = new java.util.HashMap<>();
+                        browserstackOptions.put("os", "Windows");
+                        browserstackOptions.put("osVersion", "10");
+                        browserstackOptions.put("projectName", "Enterprise-Automation");
+                        options.setCapability("bstack:options", browserstackOptions);
+                        threadLocalDriver.set(new RemoteWebDriver(new URL(gridUrl), options));
+                    }
+                } else {
+                    // Standard Grid Logic
+                    if (browser.equalsIgnoreCase("chrome")) {
+                        ChromeOptions options = new ChromeOptions();
+                        if (ConfigReader.isHeadless())
+                            options.addArguments("--headless");
+                        threadLocalDriver.set(new RemoteWebDriver(new URL(gridUrl), options));
+                    } else if (browser.equalsIgnoreCase("firefox")) {
+                        FirefoxOptions options = new FirefoxOptions();
+                        if (ConfigReader.isHeadless())
+                            options.addArguments("--headless");
+                        threadLocalDriver.set(new RemoteWebDriver(new URL(gridUrl), options));
+                    }
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();

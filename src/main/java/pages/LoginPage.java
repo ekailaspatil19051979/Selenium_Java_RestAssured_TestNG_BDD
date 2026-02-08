@@ -1,8 +1,10 @@
 package pages;
 
 import base.BasePage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import static org.openqa.selenium.support.locators.RelativeLocator.with;
 
 public class LoginPage extends BasePage {
 
@@ -22,6 +24,19 @@ public class LoginPage extends BasePage {
         sendKeys(usernameField, username);
         sendKeys(passwordField, password);
         click(loginButton);
+    }
+
+    /**
+     * Demonstrates Selenium 4 Relative Locators
+     */
+    public void loginWithRelativeLocators(String username, String password) {
+        sendKeys(usernameField, username);
+        // Find password field which is below username field
+        WebElement pwd = driver.findElement(with(By.tagName("input")).below(usernameField));
+        sendKeys(pwd, password);
+        // Find login button which is below password field
+        WebElement loginBtn = driver.findElement(with(By.tagName("button")).below(pwd));
+        click(loginBtn);
     }
 
     public boolean isLoggedIn() {

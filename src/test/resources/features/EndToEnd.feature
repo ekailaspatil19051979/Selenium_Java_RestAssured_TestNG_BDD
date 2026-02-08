@@ -13,12 +13,14 @@ Feature: End to End Booking Management
 
   @api
   Scenario: Update booking via API
-    Given I have a valid auth token
-    When I update the existing booking with price 200
+    Given I create a booking with "John", "Doe", "150", "true", "2024-01-01", "2024-01-05"
+    And I have a valid auth token
+    When I update the booking with "John", "Doe", 200
     Then I verify the booking price is updated to 200
 
   @api
   Scenario: Delete booking via API
-    Given I have a valid auth token
-    When I delete the existing booking
+    Given I create a booking with "John", "Doe", "150", "true", "2024-01-01", "2024-01-05"
+    And I have a valid auth token
+    When I delete the booking
     Then I verify the booking status is 201

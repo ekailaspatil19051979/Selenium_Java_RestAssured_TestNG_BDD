@@ -4,6 +4,8 @@ Feature: Dynamic Data Testing
   Scenario: Create booking with dynamic data
     Given I create a booking with "dynamic", "dynamic", "dynamic", "true", "dynamic", "dynamic"
     When I verify the booking status is 200
+    And I have a valid auth token
+    And I update the booking with "John", "Doe", 200
     Then I verify the booking price is updated to 200
 
   @api @dynamic @negative

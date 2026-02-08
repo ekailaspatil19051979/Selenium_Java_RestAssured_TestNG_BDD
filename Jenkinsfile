@@ -15,7 +15,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean compile'
+                script {
+                    if (isUnix()) {
+                        sh 'mvn clean compile'
+                    } else {
+                        bat 'mvn clean compile'
+                    }
+                }
             }
         }
 
@@ -23,9 +29,14 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'mvn test'
+                        if (isUnix()) {
+                            sh 'mvn test'
+                        } else {
+                            bat 'mvn test'
+                        }
                     } catch (Exception e) {
                         currentBuild.result = 'UNSTABLE'
+                        echo "Tests failed but continuing pipeline: ${e.message}"
                     }
                 }
             }
@@ -33,15 +44,39 @@ pipeline {
 
         stage('Allure Report') {
             steps {
-                allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
+                script {
+                    try {
+                        allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
+                    } catch (Exception e) {
+                        echo "Allure report generation failed: ${e.message}"
+                    }
+                }
             }
         }
     }
 
     post {
         always {
-            archiveArtifacts artifacts: 'target/**/*.html', allowEmptyArchive: true
-            junit 'target/surefire-reports/*.xml'
+            script {
+                // Archive HTML reports if they exist
+                archiveArtifacts artifacts: 'target/**/*.html', allowEmptyArchive: true
+                
+                // Publish test results if they exist
+                try {
+                    junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
+                } catch (Exception e) {
+                    echo "No test results found: ${e.message}"
+                }
+            }
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+        unstable {
+            echo 'Pipeline is unstable (some tests failed)'
         }
     }
 }

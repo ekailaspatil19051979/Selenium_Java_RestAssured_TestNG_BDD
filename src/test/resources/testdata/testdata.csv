@@ -1,0 +1,6 @@
+firstname,lastname,totalprice,depositpaid,checkin,checkout,additionalneeds
+John,Doe,120,true,2024-01-10,2024-01-15,Breakfast
+Jane,Smith-Jones,250,false,2024-02-01,2024-02-05,Late checkout
+"Robert","O'Connor",500,true,2024-03-20,2024-03-25,"Breakfast, Dinner"
+Alice,,300,true,2024-04-01,2024-04-03,Wifi
+Bob,Builder,-100,false,2024-05-01,2024-05-02,Parking

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extentreports>
+  <configuration>
+    <!-- Report theme -->
+    <theme>DARK</theme>
+    
+    <!-- Document title -->
+    <documentTitle>Automation Execution Report</documentTitle>
+    
+    <!-- Report name -->
+    <reportName>Enterprise Automation Framework Test Results</reportName>
+    
+    <!-- Date format -->
+    <timeStampFormat>MMM dd, yyyy HH:mm:ss</timeStampFormat>
+  </configuration>
+</extentreports>

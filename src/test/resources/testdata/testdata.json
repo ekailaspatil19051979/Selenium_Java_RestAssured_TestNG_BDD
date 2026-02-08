@@ -1,0 +1,58 @@
+[
+    {
+        "description": "Standard Booking",
+        "firstname": "James",
+        "lastname": "Dean",
+        "totalprice": 150,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2024-03-01",
+            "checkout": "2024-03-05"
+        },
+        "additionalneeds": "Breakfast",
+        "payment_info": {
+            "card_type": "Visa",
+            "last_four": "4242"
+        }
+    },
+    {
+        "description": "Long Stay Booking",
+        "firstname": "Elizabeth",
+        "lastname": "Taylor",
+        "totalprice": 4500,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2024-06-01",
+            "checkout": "2024-07-01"
+        },
+        "additionalneeds": "All-inclusive, Airport Pickup",
+        "special_requests": [
+            "Late check-in",
+            "Ocean view"
+        ]
+    },
+    {
+        "description": "Unpaid Deposit Booking",
+        "firstname": "Michael",
+        "lastname": "Caine",
+        "totalprice": 85,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2024-04-10",
+            "checkout": "2024-04-12"
+        },
+        "additionalneeds": "None"
+    },
+    {
+        "description": "Edge Case - Null Needs",
+        "firstname": "Test",
+        "lastname": "User",
+        "totalprice": 0,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2024-12-01",
+            "checkout": "2024-12-02"
+        },
+        "additionalneeds": null
+    }
+]

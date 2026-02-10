@@ -13,55 +13,76 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class DriverFactory {
+
     private static ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
 
     public static void initDriver() {
+
+        // If driver already exists for this thread, do not re-create
+        if (threadLocalDriver.get() != null) {
+            return;
+        }
+
         String browser = ConfigReader.getBrowser();
         String gridUrl = System.getProperty("grid.url");
 
-        if (gridUrl != null && !gridUrl.isEmpty()) {
-            try {
-                if (gridUrl.contains("browserstack")) {
-                    // BrowserStack Specific Capabilities
-                    if (browser.equalsIgnoreCase("chrome")) {
-                        ChromeOptions options = new ChromeOptions();
-                        java.util.HashMap<String, Object> browserstackOptions = new java.util.HashMap<>();
-                        browserstackOptions.put("os", "Windows");
-                        browserstackOptions.put("osVersion", "10");
-                        browserstackOptions.put("projectName", "Enterprise-Automation");
-                        options.setCapability("bstack:options", browserstackOptions);
-                        threadLocalDriver.set(new RemoteWebDriver(new URL(gridUrl), options));
-                    }
-                } else {
-                    // Standard Grid Logic
-                    if (browser.equalsIgnoreCase("chrome")) {
-                        ChromeOptions options = new ChromeOptions();
-                        if (ConfigReader.isHeadless())
-                            options.addArguments("--headless");
-                        threadLocalDriver.set(new RemoteWebDriver(new URL(gridUrl), options));
-                    } else if (browser.equalsIgnoreCase("firefox")) {
-                        FirefoxOptions options = new FirefoxOptions();
-                        if (ConfigReader.isHeadless())
-                            options.addArguments("--headless");
-                        threadLocalDriver.set(new RemoteWebDriver(new URL(gridUrl), options));
-                    }
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Invalid Grid URL");
-            }
-        } else {
-            if (browser.equalsIgnoreCase("chrome")) {
-                ChromeOptions options = new ChromeOptions();
-                if (ConfigReader.isHeadless())
-                    options.addArguments("--headless");
-                threadLocalDriver.set(new ChromeDriver(options));
-            } else if (browser.equalsIgnoreCase("firefox")) {
-                threadLocalDriver.set(new FirefoxDriver());
-            }
-        }
+        try {
+            if (gridUrl != null && !gridUrl.isEmpty()) {
 
-        getDriver().manage().window().maximize();
+                if (browser.equalsIgnoreCase("chrome")) {
+
+                    ChromeOptions options = new ChromeOptions();
+
+                    if (ConfigReader.isHeadless()) {
+                        options.addArguments("--headless");
+                    }
+
+                    threadLocalDriver.set(
+                            new RemoteWebDriver(new URL(gridUrl), options));
+
+                } else if (browser.equalsIgnoreCase("firefox")) {
+
+                    FirefoxOptions options = new FirefoxOptions();
+
+                    if (ConfigReader.isHeadless()) {
+                        options.addArguments("--headless");
+                    }
+
+                    threadLocalDriver.set(
+                            new RemoteWebDriver(new URL(gridUrl), options));
+                }
+
+            } else {
+
+                // Local execution
+                if (browser.equalsIgnoreCase("chrome")) {
+
+                    ChromeOptions options = new ChromeOptions();
+
+                    if (ConfigReader.isHeadless()) {
+                        options.addArguments("--headless");
+                    }
+
+                    threadLocalDriver.set(new ChromeDriver(options));
+
+                } else if (browser.equalsIgnoreCase("firefox")) {
+
+                    threadLocalDriver.set(new FirefoxDriver());
+
+                } else {
+                    throw new RuntimeException("Unsupported browser: " + browser);
+                }
+            }
+
+            // Safety check before maximize
+            if (getDriver() != null) {
+                getDriver().manage().window().maximize();
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Invalid Grid URL: " + gridUrl);
+        }
     }
 
     public static WebDriver getDriver() {
@@ -69,8 +90,11 @@ public class DriverFactory {
     }
 
     public static void quitDriver() {
-        if (getDriver() != null) {
-            getDriver().quit();
+
+        WebDriver driver = getDriver();
+
+        if (driver != null) {
+            driver.quit();
             threadLocalDriver.remove();
         }
     }

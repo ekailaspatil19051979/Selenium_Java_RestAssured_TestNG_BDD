@@ -1,0 +1,64 @@
+
+# Mermaid Diagrams for Framework
+
+## 1. High Level Architecture
+
+```mermaid
+flowchart TD
+    A[Feature Files] --> B[Step Definitions]
+    B --> C[Service Layer]
+    C --> D[Utilities]
+    C --> E[Page Objects]
+    E --> F[Selenium WebDriver]
+    C --> G[RestAssured APIs]
+```
+
+## 2. Dependency Injection Flow
+
+```mermaid
+flowchart LR
+    S[Cucumber Runner] --> T[Create ScenarioContext]
+    T --> A[AdvancedStepDefs]
+    T --> N[NegativeStepDefs]
+    T --> U[UI StepDefs]
+    A --> D[Shared Data]
+    N --> D
+    U --> D
+```
+
+## 3. CI/CD Pipeline
+
+```mermaid
+flowchart LR
+    Code[Git Repository] --> Build[Maven Build]
+    Build --> Test[Test Execution]
+    Test --> Report[Allure Report]
+    Report --> Deploy[Docker Container]
+    Deploy --> Jenkins[Jenkins/Azure Pipeline]
+```
+
+## 4. Page Object Model
+
+```mermaid
+classDiagram
+    BasePage <|-- LoginPage
+    BasePage <|-- HomePage
+    BasePage <|-- BookingPage
+    class BasePage{
+      +click()
+      +type()
+      +wait()
+    }
+```
+
+## 5. API Automation Layer
+
+```mermaid
+flowchart TD
+    Feature --> Steps
+    Steps --> RequestBuilder
+    RequestBuilder --> RestAssured
+    RestAssured --> Response
+    Response --> ResponseValidator
+```
+

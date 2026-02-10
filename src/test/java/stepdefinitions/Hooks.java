@@ -15,9 +15,7 @@ public class Hooks {
     public void setup(Scenario scenario) {
         LoggerUtil.info("Starting Scenario: " + scenario.getName());
         APIBase.setup();
-        if (scenario.getSourceTagNames().contains("@ui")) {
-            DriverFactory.initDriver();
-        }
+        DriverFactory.initDriver();
     }
 
     @After

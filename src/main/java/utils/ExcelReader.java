@@ -12,23 +12,28 @@ import java.util.Map;
 public class ExcelReader {
 
     public static List<Map<String, String>> getExcelData(String filePath, String sheetName) {
+
         List<Map<String, String>> data = new ArrayList<>();
+
         try (FileInputStream fis = new FileInputStream(filePath);
-                Workbook workbook = new XSSFWorkbook(fis)) {
+             Workbook workbook = new XSSFWorkbook(fis)) {
 
             Sheet sheet = workbook.getSheet(sheetName);
             Row headerRow = sheet.getRow(0);
             int colCount = headerRow.getPhysicalNumberOfCells();
 
             for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+
                 Row row = sheet.getRow(i);
                 Map<String, String> rowData = new HashMap<>();
 
                 for (int j = 0; j < colCount; j++) {
+
                     String key = headerRow.getCell(j).getStringCellValue();
                     String value = "";
 
                     Cell cell = row.getCell(j);
+
                     if (cell != null) {
                         switch (cell.getCellType()) {
                             case STRING:
@@ -48,9 +53,9 @@ public class ExcelReader {
                 }
                 data.add(rowData);
             }
+
         } catch (IOException e) {
             e.printStackTrace();
-            LoggerUtil.error("Error reading Excel file: " + e.getMessage());
         }
         return data;
     }

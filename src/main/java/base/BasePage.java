@@ -12,17 +12,36 @@ import config.ConfigReader;
 import java.time.Duration;
 
 public class BasePage {
+
     protected WebDriver driver;
     protected WebDriverWait wait;
 
     public BasePage() {
+        // Driver might not be initialized at object creation time
         this.driver = DriverFactory.getDriver();
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(ConfigReader.getExplicitWait()));
-        PageFactory.initElements(driver, this);
+
+        if (this.driver != null) {
+            this.wait = new WebDriverWait(driver,
+                    Duration.ofSeconds(ConfigReader.getExplicitWait()));
+
+            PageFactory.initElements(driver, this);
+        }
+    }
+
+    private WebDriverWait getWait() {
+        if (wait == null) {
+            this.driver = DriverFactory.getDriver();
+
+            if (driver != null) {
+                wait = new WebDriverWait(driver,
+                        Duration.ofSeconds(ConfigReader.getExplicitWait()));
+            }
+        }
+        return wait;
     }
 
     public void waitForVisibility(WebElement element) {
-        wait.until(ExpectedConditions.visibilityOf(element));
+        getWait().until(ExpectedConditions.visibilityOf(element));
     }
 
     public void click(WebElement element) {
@@ -43,7 +62,6 @@ public class BasePage {
 
     /**
      * Selenium 4 Feature: Access Shadow DOM
-     * Returns the ShadowRoot of a given host element
      */
     public SearchContext getShadowRoot(WebElement shadowHost) {
         return shadowHost.getShadowRoot();
